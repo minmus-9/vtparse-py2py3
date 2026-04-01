@@ -1,0 +1,26 @@
+this is a version of vtparse that also creates a python module, vtparse.py,
+when you execute make(1).
+
+the vtparse_table.[ch] are run through "gcc -E -" for preprocessing, and
+this output is fed to vtparse_gen.py to produce vtparse.py.
+
+the vtparse.py module contains 2 public items:
+
+    - clean(text-to-clean) strips terminal control codes from text-to-clean
+      and returns the cleaned text
+
+    - p = VTParser(callback)
+      p(text-to-parse)
+
+      the callback fcn callback() is called as
+
+        callback(action, ch)
+      
+      where "action" is one of the VTPARSE_ACTION_xxx constants, and ch is
+      either 0 or the character just read. see the src for details.
+
+DO NOT run unicode through this -- you will not be happy.
+
+this has been tested with python-2.7.18, 3.14.3, 3.11.2, and 3.6.12.
+
+--minmus-9 2026-04-01 20:53Z
