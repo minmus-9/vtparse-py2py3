@@ -1,6 +1,11 @@
 this is a version of vtparse that also creates a python module, vtparse.py,
 when you execute make(1).
 
+the vtparse.py module is part of this repo; you do not need to regenerate
+it unless you need to change vtparse_gen.py and/or vtparse_gen.inc. the
+original repo, https://github.com/haberman/vtparse, hasn't changed in 19
+years, and i don't expect it to change anytime soon...
+
 the vtparse_table.[ch] are run through "gcc -E -" for preprocessing, and
 this output is fed to vtparse_gen.py to produce vtparse.py.
 
