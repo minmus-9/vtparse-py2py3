@@ -114,20 +114,20 @@ def clean(text):
     ret = []
 
     def cb(action, ch):
-        if action == VTPARSE_ACTION_PRINT:
+        if action in (VTPARSE_ACTION_EXECUTE, VTPARSE_ACTION_PRINT):
             ret.append(ch)
 
     VTParser(cb)(text)
     try:
         _ = unicode
-        return "".join(chr(x) for x in ret).decode(locale.getpreferredencoding())
+        return "".join(chr(x) for x in ret).decode(ENCODING)
     except NameError:
-        return bytes(ret).decode(locale.getpreferredencoding())
+        return bytes(ret).decode(ENCODING)
 
 
 def main():
     "main program: clean stdin"
-    print(clean(sys.stdin.read()))
+    print(clean(sys.stdin.read()), end="")
 
 
 if __name__ == "__main__":

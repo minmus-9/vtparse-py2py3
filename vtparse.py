@@ -21,6 +21,9 @@ import sys
 
 __all__ = ("VTParser", "clean", "main")
 
+ENCODING = locale.getpreferredencoding()
+ENCODING = "latin-1"
+
 VTPARSE_STATE_CSI_ENTRY = 1
 VTPARSE_STATE_CSI_IGNORE = 2
 VTPARSE_STATE_CSI_INTERMEDIATE = 3
@@ -2502,8 +2505,12 @@ class VTParser:
             buffer = buffer.encode(locale.getpreferredencoding())
         for byte in buffer:
             b = ord(byte) if isinstance(byte, str) else byte
-            change = STATE_TABLE[self.state - 1][b]
-            self.do_state_change(change, b)
+            t = STATE_TABLE[self.state - 1]
+            if 0 <= b < 0x80:
+                change = STATE_TABLE[self.state - 1][b]
+                self.do_state_change(change, b)
+            else:
+                self.cb(VTPARSE_ACTION_PRINT, b)
 
 
 def clean(text):
@@ -2517,9 +2524,9 @@ def clean(text):
     VTParser(cb)(text)
     try:
         _ = unicode
-        return "".join(chr(x) for x in ret).decode(locale.getpreferredencoding())
+        return "".join(chr(x) for x in ret).decode(ENCODING)
     except NameError:
-        return bytes(ret).decode(locale.getpreferredencoding())
+        return bytes(ret).decode(ENCODING)
 
 
 def main():

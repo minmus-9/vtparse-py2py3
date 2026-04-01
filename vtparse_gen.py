@@ -27,6 +27,9 @@ import locale
 import sys
 
 __all__ = ("VTParser", "clean", "main")
+
+ENCODING = locale.getpreferredencoding()
+ENCODING = "latin-1"
 '''.lstrip()
 )
 
